@@ -3498,7 +3498,7 @@ void cpu_physical_memory_write_rom(hwaddr addr,
 
         if (!(memory_region_is_ram(section->mr) ||
               memory_region_is_romd(section->mr))) {
-            /* do nothing */
+            cpu_abort(first_cpu, "Attempting to load malformed ROM at address: 0x%x\n", addr);
         } else {
             unsigned long addr1;
             addr1 = memory_region_get_ram_addr(section->mr)
