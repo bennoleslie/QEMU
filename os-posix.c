@@ -113,6 +113,14 @@ char *os_find_datadir(const char *argv0)
             p = buf;
         }
     }
+#elif defined(__APPLE__) && defined(__MACH__)
+    {
+        uint32_t len = sizeof(buf);
+
+        if(!_NSGetExecutablePath(buf, &len)) {
+            p = buf;
+        }
+    }
 #endif
     /* If we don't have any way of figuring out the actual executable
        location then try argv[0].  */
