@@ -978,8 +978,10 @@ static int cpu_gdb_write_register(CPUARMState *env, uint8_t *mem_buf, int n)
 
     /* Mask out low bit of PC to workaround gdb bugs.  This will probably
        cause problems if we ever implement the Jazelle DBX extensions.  */
-    if (n == 15)
+    if (n == 15) {
+        env->thumb = tmp & 1;
         tmp &= ~1;
+    }
 
     if (n < 16) {
         /* Core integer register.  */
