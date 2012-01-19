@@ -2106,7 +2106,11 @@ static int gdb_handle_packet(GDBState *s, const char *line_buf)
 
             p += 4;
             if (*p == '?') {
+#if defined(TARGET_HAS_ICE)
                 put_packet(s, "vCont;c;C;s;S");
+#else
+                put_packet(s, "vCont;c;C");
+#endif
                 break;
             }
             res = 0;
