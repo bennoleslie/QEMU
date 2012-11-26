@@ -928,7 +928,7 @@ static void stellaris_adc_fifo_write(stellaris_adc_state *s, int n,
 {
     int head;
 
-    /* TODO: Real hardware has limited size FIFOs.  We have a full 16 entry 
+    /* TODO: Real hardware has limited size FIFOs.  We have a full 16 entry
        FIFO fir each sequencer.  */
     head = (s->fifo[n].state >> 4) & 0xf;
     if (s->fifo[n].state & STELLARIS_ADC_FIFO_FULL) {
@@ -1289,6 +1289,7 @@ static void stellaris_init(const char *kernel_filename, const char *cpu_model,
         sysbus_mmio_map(sysbus_from_qdev(enet), 0, 0x40048000);
         sysbus_connect_irq(sysbus_from_qdev(enet), 0, pic[42]);
     }
+#ifdef CONFIG_CONSOLE
     if (board->peripherals & BP_GAMEPAD) {
         qemu_irq gpad_irq[5];
         static const int gpad_keycode[5] = { 0xc8, 0xd0, 0xcb, 0xcd, 0x1d };
@@ -1301,6 +1302,7 @@ static void stellaris_init(const char *kernel_filename, const char *cpu_model,
 
         stellaris_gamepad_init(5, gpad_irq, gpad_keycode);
     }
+#endif
     for (i = 0; i < 7; i++) {
         if (board->dc4 & (1 << i)) {
             for (j = 0; j < 8; j++) {
