@@ -203,7 +203,7 @@ static void compute_abs_deadline(struct timespec *ts, int ms)
 
 int qemu_sem_timedwait(QemuSemaphore *sem, int ms)
 {
-    int rc;
+    int rc = 0;
     struct timespec ts;
 
 #if defined(__OpenBSD__) || defined(__APPLE__) || defined(__NetBSD__)
