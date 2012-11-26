@@ -211,6 +211,7 @@ zero_malloc=""
 trace_backend="nop"
 trace_file="trace"
 spice=""
+console="yes"
 rbd=""
 smartcard=""
 smartcard_nss=""
@@ -745,6 +746,10 @@ for opt do
   ;;
   --enable-spice) spice="yes"
   ;;
+  --disable-console) console="no"
+  ;;
+  --enable-console) console="yes"
+  ;;
   --disable-libiscsi) libiscsi="no"
   ;;
   --enable-libiscsi) libiscsi="yes"
@@ -1102,6 +1107,8 @@ echo "  --with-trace-file=NAME   Full PATH,NAME of file to store traces"
 echo "                           Default:trace-<pid>"
 echo "  --disable-spice          disable spice"
 echo "  --enable-spice           enable spice"
+echo "  --disable-console        disable console"
+echo "  --enable-console         enable console"
 echo "  --enable-rbd             enable building the rados block device (rbd)"
 echo "  --disable-libiscsi       disable iscsi support"
 echo "  --enable-libiscsi        enable iscsi support"
@@ -2103,7 +2110,9 @@ fi
 # pixman support probe
 
 if test "$pixman" = ""; then
-  if $pkg_config pixman-1 > /dev/null 2>&1; then
+  if test "$console" = "no"; then
+    pixman="no"
+  elif $pkg_config pixman-1 > /dev/null 2>&1; then
     pixman="system"
   else
     pixman="internal"
@@ -2112,7 +2121,7 @@ fi
 if test "$pixman" = "system"; then
   pixman_cflags=`$pkg_config --cflags pixman-1 2>/dev/null`
   pixman_libs=`$pkg_config --libs pixman-1 2>/dev/null`
-else
+elif test "$pixman" = "internal"; then
   if test ! -d ${source_path}/pixman/pixman; then
     echo "ERROR: pixman not present. Your options:"
     echo "  (1) Prefered: Install the pixman devel package (any recent"
@@ -3509,6 +3518,10 @@ fi
 
 if test "$spice" = "yes" ; then
   echo "CONFIG_SPICE=y" >> $config_host_mak
+fi
+
+if test "$console" = "yes" ; then
+  echo "CONFIG_CONSOLE=y" >> $config_host_mak
 fi
 
 if test "$smartcard" = "yes" ; then

@@ -38,7 +38,9 @@
 #include "sysemu.h"
 #include "monitor.h"
 #include "readline.h"
+#ifdef CONFIG_CONSOLE
 #include "console.h"
+#endif
 #include "blockdev.h"
 #include "audio/audio.h"
 #include "disas.h"
@@ -1242,10 +1244,13 @@ static void do_sum(Monitor *mon, const QDict *qdict)
     monitor_printf(mon, "%05d\n", sum);
 }
 
+#ifdef CONFIG_CONSOLE
 static int mouse_button_state;
+#endif
 
 static void do_mouse_move(Monitor *mon, const QDict *qdict)
 {
+#ifdef CONFIG_CONSOLE
     int dx, dy, dz;
     const char *dx_str = qdict_get_str(qdict, "dx_str");
     const char *dy_str = qdict_get_str(qdict, "dy_str");
@@ -1256,14 +1261,28 @@ static void do_mouse_move(Monitor *mon, const QDict *qdict)
     if (dz_str)
         dz = strtol(dz_str, NULL, 0);
     kbd_mouse_event(dx, dy, dz, mouse_button_state);
+#else
+    monitor_printf(mon, "Mouse move not supported\n");
+#endif
 }
 
 static void do_mouse_button(Monitor *mon, const QDict *qdict)
 {
+#ifdef CONFIG_CONSOLE
     int button_state = qdict_get_int(qdict, "button_state");
     mouse_button_state = button_state;
     kbd_mouse_event(0, 0, 0, mouse_button_state);
+#else
+    monitor_printf(mon, "Mouse button not supported\n");
+#endif
 }
+
+#ifndef CONFIG_CONSOLE
+static void do_mouse_set(Monitor *mon, const QDict *qdict)
+{
+    monitor_printf(mon, "Mouse button not supported\n");
+}
+#endif
 
 static void do_ioport_read(Monitor *mon, const QDict *qdict)
 {

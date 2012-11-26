@@ -168,9 +168,11 @@ enum bt_l2cap_psm_predef {
 void bt_l2cap_sdp_init(struct bt_l2cap_device_s *dev);
 
 /* bt-hid.c */
+#ifdef CONFIG_CONSOLE
 struct bt_device_s *bt_mouse_init(struct bt_scatternet_s *net);
 struct bt_device_s *bt_tablet_init(struct bt_scatternet_s *net);
 struct bt_device_s *bt_keyboard_init(struct bt_scatternet_s *net);
+#endif
 
 /* Link Management Protocol layer defines */
 

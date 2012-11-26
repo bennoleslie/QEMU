@@ -17,7 +17,9 @@
 #include "sysemu.h"
 #include "qmp-commands.h"
 #include "ui/qemu-spice.h"
+#ifdef CONFIG_VNC
 #include "ui/vnc.h"
+#endif
 #include "kvm.h"
 #include "arch_init.h"
 #include "hw/qdev.h"
@@ -296,7 +298,11 @@ void qmp_set_password(const char *protocol, const char *password,
         }
         /* Note that setting an empty password will not disable login through
          * this interface. */
+#ifdef CONFIG_VNC
         rc = vnc_display_password(NULL, password);
+#else
+        rc = -ENODEV;
+#endif
         if (rc < 0) {
             error_set(errp, QERR_SET_PASSWD_FAILED);
         }
@@ -336,7 +342,11 @@ void qmp_expire_password(const char *protocol, const char *whenstr,
     }
 
     if (strcmp(protocol, "vnc") == 0) {
+#ifdef CONFIG_VNC
         rc = vnc_display_pw_expire(NULL, when);
+#else
+        rc = -ENODEV;
+#endif
         if (rc != 0) {
             error_set(errp, QERR_SET_PASSWD_FAILED);
         }
@@ -345,6 +355,24 @@ void qmp_expire_password(const char *protocol, const char *whenstr,
 
     error_set(errp, QERR_INVALID_PARAMETER, "protocol");
 }
+
+#ifndef CONFIG_CONSOLE
+MouseInfoList *qmp_query_mice(Error **errp)
+{
+    return NULL;
+}
+
+void qmp_send_key(KeyValueList *keys, bool has_hold_time, int64_t hold_time,
+                  Error **errp)
+{
+    error_set(errp, ERROR_CLASS_GENERIC_ERROR, "Send key not supported.");
+}
+
+void qmp_screendump(const char *filename, Error **errp)
+{
+    error_set(errp, ERROR_CLASS_GENERIC_ERROR, "Screendump not supported.");
+}
+#endif
 
 #ifdef CONFIG_VNC
 void qmp_change_vnc_password(const char *password, Error **errp)

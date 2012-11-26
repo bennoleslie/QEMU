@@ -20,7 +20,9 @@
 #include "qmp-commands.h"
 #include "qemu_socket.h"
 #include "monitor.h"
+#ifdef CONFIG_CONSOLE
 #include "console.h"
+#endif
 
 static void hmp_handle_error(Monitor *mon, Error **errp)
 {
@@ -1185,6 +1187,7 @@ void hmp_closefd(Monitor *mon, const QDict *qdict)
 
 void hmp_send_key(Monitor *mon, const QDict *qdict)
 {
+#ifdef CONFIG_CONSOLE
     const char *keys = qdict_get_str(qdict, "keys");
     KeyValueList *keylist, *head = NULL, *tmp = NULL;
     int has_hold_time = qdict_haskey(qdict, "hold-time");
@@ -1250,6 +1253,11 @@ out:
 err_out:
     monitor_printf(mon, "invalid parameter: %s\n", keyname_buf);
     goto out;
+#else
+    Error *err = NULL;
+    error_set(&err, ERROR_CLASS_GENERIC_ERROR, "Sendkey not supported.");
+    hmp_handle_error(mon, &err);
+#endif
 }
 
 void hmp_screen_dump(Monitor *mon, const QDict *qdict)

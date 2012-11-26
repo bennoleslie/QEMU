@@ -24,7 +24,9 @@
 #include "qemu-common.h"
 #include "net.h"
 #include "monitor.h"
+#ifdef CONFIG_CONSOLE
 #include "console.h"
+#endif
 #include "sysemu.h"
 #include "qemu-timer.h"
 #include "qemu-char.h"
@@ -2734,8 +2736,12 @@ static const struct {
     { .name = "null",      .open = qemu_chr_open_null },
     { .name = "socket",    .open = qemu_chr_open_socket },
     { .name = "udp",       .open = qemu_chr_open_udp },
+#ifdef CONFIG_CONSOLE
     { .name = "msmouse",   .open = qemu_chr_open_msmouse },
+#endif
+#ifdef CONFIG_CONSOLE
     { .name = "vc",        .open = text_console_init },
+#endif
 #ifdef _WIN32
     { .name = "file",      .open = qemu_chr_open_win_file_out },
     { .name = "pipe",      .open = qemu_chr_open_win_pipe },
