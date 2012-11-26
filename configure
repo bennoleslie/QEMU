@@ -3243,6 +3243,7 @@ echo "libiscsi support  $libiscsi"
 echo "build guest agent $guest_agent"
 echo "seccomp support   $seccomp"
 echo "coroutine backend $coroutine_backend"
+echo "console support   $console"
 echo "GlusterFS support $glusterfs"
 
 if test "$sdl_too_old" = "yes"; then
