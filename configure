@@ -213,6 +213,7 @@ trace_file="trace"
 spice=""
 console="yes"
 usb="yes"
+ide="yes"
 rbd=""
 smartcard=""
 smartcard_nss=""
@@ -754,6 +755,10 @@ for opt do
   --disable-usb) usb="no"
   ;;
   --enable-usb) usb="yes"
+  ;;
+  --disable-ide) ide="no"
+  ;;
+  --enable-ide) ide="yes"
   ;;
   --disable-libiscsi) libiscsi="no"
   ;;
@@ -3250,6 +3255,7 @@ echo "seccomp support   $seccomp"
 echo "coroutine backend $coroutine_backend"
 echo "console support   $console"
 echo "USB support       $usb"
+echo "IDE support       $ide"
 echo "GlusterFS support $glusterfs"
 
 if test "$sdl_too_old" = "yes"; then
