@@ -704,6 +704,7 @@ static BlockDriverAIOCB *paio_submit(BlockDriverState *bs, int fd,
     return thread_pool_submit_aio(aio_worker, acb, cb, opaque);
 }
 
+#if defined(__linux__)
 static BlockDriverAIOCB *paio_ioctl(BlockDriverState *bs, int fd,
         unsigned long int req, void *buf,
         BlockDriverCompletionFunc *cb, void *opaque)
@@ -719,6 +720,7 @@ static BlockDriverAIOCB *paio_ioctl(BlockDriverState *bs, int fd,
 
     return thread_pool_submit_aio(aio_worker, acb, cb, opaque);
 }
+#endif
 
 static BlockDriverAIOCB *raw_aio_submit(BlockDriverState *bs,
         int64_t sector_num, QEMUIOVector *qiov, int nb_sectors,
