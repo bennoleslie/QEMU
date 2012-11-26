@@ -1,35 +1,82 @@
-obj-y = integratorcp.o versatilepb.o arm_pic.o
-obj-y += arm_boot.o
-obj-y += xilinx_zynq.o zynq_slcr.o
-obj-y += xilinx_spips.o
+obj-y =
 obj-y += arm_gic.o arm_gic_common.o
-obj-y += realview_gic.o realview.o arm_sysctl.o arm11mpcore.o a9mpcore.o
-obj-y += exynos4210_gic.o exynos4210_combiner.o exynos4210.o
-obj-y += exynos4_boards.o exynos4210_uart.o exynos4210_pwm.o
-obj-y += exynos4210_pmu.o exynos4210_mct.o exynos4210_fimd.o
-obj-y += exynos4210_rtc.o exynos4210_i2c.o
-obj-y += arm_mptimer.o a15mpcore.o
-obj-y += armv7m.o armv7m_nvic.o stellaris.o stellaris_enet.o
-obj-y += highbank.o
-obj-y += pxa2xx.o pxa2xx_pic.o pxa2xx_gpio.o pxa2xx_timer.o pxa2xx_dma.o
-obj-y += pxa2xx_lcd.o pxa2xx_mmci.o pxa2xx_pcmcia.o pxa2xx_keypad.o
-obj-y += gumstix.o
-obj-y += zaurus.o ide/microdrive.o spitz.o tosa.o tc6393xb.o
-obj-y += omap1.o omap_lcdc.o omap_dma.o omap_clk.o omap_mmc.o omap_i2c.o \
-                omap_gpio.o omap_intc.o omap_uart.o
-obj-y += omap2.o omap_dss.o soc_dma.o omap_gptimer.o omap_synctimer.o \
-                omap_gpmc.o omap_sdrc.o omap_spi.o omap_tap.o omap_l4.o
-obj-y += omap_sx1.o palm.o tsc210x.o
-obj-y += nseries.o blizzard.o onenand.o cbus.o tusb6010.o usb/hcd-musb.o
-obj-y += mst_fpga.o mainstone.o
-obj-y += z2.o
-obj-y += musicpal.o bitbang_i2c.o marvell_88w8618_audio.o
-obj-y += framebuffer.o
-obj-y += vexpress.o
-obj-y += strongarm.o
-obj-y += collie.o
-obj-y += imx_serial.o imx_ccm.o imx_timer.o imx_avic.o
-obj-y += kzm.o
+obj-y += arm_pic.o
+obj-y += armv7m_nvic.o
+obj-y += arm_sysctl.o
+obj-y += bitbang_i2c.o
+
+## ARM Options
+obj-$(CONFIG_ARM_MPCORE) += arm11mpcore.o a9mpcore.o arm_mptimer.o a15mpcore.o
+obj-$(CONFIG_ARM_V7) += armv7m.o
+obj-$(CONFIG_ARM_BOOT) += arm_boot.o
+obj-$(CONFIG_ARM_FRAMEBUFFER) += framebuffer.o
+obj-$(CONFIG_ARM_USB) +=  usb/hcd-musb.o
+
+## Platforms
+
+# IMX
+obj-$(CONFIG_IMX) += imx_serial.o imx_ccm.o imx_timer.o imx_avic.o
+
+# Strongarm
+obj-$(CONFIG_STRONGARM) += strongarm.o
+
+# Xilinx
+obj-$(CONFIG_XILINX) += zynq_slcr.o xilinx_spips.o
+
+# Realview
+
+# Exynos
+obj-$(CONFIG_EXYNOS) += exynos4210_gic.o exynos4210_combiner.o exynos4210.o
+obj-$(CONFIG_EXYNOS) += exynos4210_uart.o exynos4210_pwm.o
+obj-$(CONFIG_EXYNOS) += exynos4210_pmu.o exynos4210_mct.o exynos4210_fimd.o
+obj-$(CONFIG_EXYNOS) += exynos4210_rtc.o exynos4210_i2c.o
+
+# PXA
+obj-$(CONFIG_PXA) += pxa2xx.o pxa2xx_pic.o pxa2xx_gpio.o \
+	pxa2xx_timer.o pxa2xx_dma.o pxa2xx_mmci.o pxa2xx_pcmcia.o \
+	pxa2xx_keypad.o pxa2xx_lcd.o
+
+# OMAP1
+obj-$(CONFIG_OMAP) += omap1.o omap_dma.o omap_clk.o omap_mmc.o \
+	omap_i2c.o omap_gpio.o omap_intc.o omap_uart.o omap_lcdc.o
+# OMAP 2
+obj-$(CONFIG_OMAP) += omap2.o soc_dma.o omap_gptimer.o \
+	omap_synctimer.o omap_gpmc.o omap_sdrc.o omap_spi.o omap_tap.o \
+	omap_l4.o omap_dss.o omap_sx1.o
+
+## Machines
+obj-$(CONFIG_MACHINE_COLLIE) += collie.o
+obj-$(CONFIG_MACHINE_EXYNOS) += exynos4_boards.o
+obj-$(CONFIG_MACHINE_GUMSTIX) += gumstix.o
+obj-$(CONFIG_MACHINE_HIGHBANK) += highbank.o
+obj-$(CONFIG_MACHINE_INTEGRATOR) += integratorcp.o
+obj-$(CONFIG_MACHINE_KZM) += kzm.o
+obj-$(CONFIG_MACHINE_MAINSTONE) += mainstone.o
+obj-$(CONFIG_MACHINE_NSERIES) += nseries.o
+obj-$(CONFIG_MACHINE_PALM) += palm.o
+obj-$(CONFIG_MACHINE_REALVIEW) += realview.o
+obj-$(CONFIG_MACHINE_SPITZ) += spitz.o
+obj-$(CONFIG_MACHINE_STELLARIS) += stellaris.o stellaris_enet.o
+obj-$(CONFIG_MACHINE_TOSA) += tosa.o
+obj-$(CONFIG_MACHINE_VERSATILE) += versatilepb.o vexpress.o
+obj-$(CONFIG_MACHINE_XLINUX_ZYNQ) += xilinx_zynq.o
+obj-$(CONFIG_MACHINE_Z2) += z2.o
+
+## Devices
+
+obj-$(CONFIG_DEVICE_BLIZZARD) += blizzard.o
+obj-$(CONFIG_DEVICE_CBUS) += cbus.o
+obj-$(CONFIG_DEVICE_MARVELL_88W8618_AUDIO) += marvell_88w8618_audio.o
+obj-$(CONFIG_DEVICE_MICRODRIVE) += ide/microdrive.o tc6393xb.o
+obj-$(CONFIG_DEVICE_MST_FPGA) += mst_fpga.o
+obj-$(CONFIG_DEVICE_MUSICPAL) += musicpal.o
+obj-$(CONFIG_DEVICE_ONENAND) += onenand.o
+obj-$(CONFIG_DEVICE_REALVIEW_GIC) += realview_gic.o
+obj-$(CONFIG_DEVICE_STELLARIS_INPUT) += stellaris_input.o
+obj-$(CONFIG_DEVICE_TSC201X) += tsc210x.o
+obj-$(CONFIG_DEVICE_TUSB6010) += tusb6010.o
+obj-$(CONFIG_DEVICE_ZAURUS) += zaurus.o
+
 obj-$(CONFIG_FDT) += ../device_tree.o
 
 obj-y := $(addprefix ../,$(obj-y))
