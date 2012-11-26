@@ -1164,7 +1164,11 @@ static stellaris_board_info stellaris_boards[] = {
     0x01071013,
     0x3f0f01ff,
     0x0000001f,
+#ifdef CONFIG_CONSOLE
     BP_OLED_I2C
+#else
+    0
+#endif
   },
   { "LM3S6965EVB",
     0x10010002,
