@@ -212,6 +212,7 @@ trace_backend="nop"
 trace_file="trace"
 spice=""
 console="yes"
+usb="yes"
 rbd=""
 smartcard=""
 smartcard_nss=""
@@ -749,6 +750,10 @@ for opt do
   --disable-console) console="no"
   ;;
   --enable-console) console="yes"
+  ;;
+  --disable-usb) usb="no"
+  ;;
+  --enable-usb) usb="yes"
   ;;
   --disable-libiscsi) libiscsi="no"
   ;;
@@ -3244,6 +3249,7 @@ echo "build guest agent $guest_agent"
 echo "seccomp support   $seccomp"
 echo "coroutine backend $coroutine_backend"
 echo "console support   $console"
+echo "USB support       $usb"
 echo "GlusterFS support $glusterfs"
 
 if test "$sdl_too_old" = "yes"; then
@@ -3523,6 +3529,10 @@ fi
 
 if test "$console" = "yes" ; then
   echo "CONFIG_CONSOLE=y" >> $config_host_mak
+fi
+
+if test "$usb" = "yes" ; then
+  echo "CONFIG_USB=y" >> $config_host_mak
 fi
 
 if test "$smartcard" = "yes" ; then

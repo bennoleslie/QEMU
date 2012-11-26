@@ -1159,7 +1159,7 @@ static void smp_parse(const char *optarg)
 
 /***********************************************************/
 /* USB devices */
-
+#ifdef CONFIG_USB
 static int usb_device_add(const char *devname)
 {
     const char *p;
@@ -1241,6 +1241,7 @@ void do_usb_del(Monitor *mon, const QDict *qdict)
         error_report("could not delete USB device '%s'", devname);
     }
 }
+#endif
 
 /***********************************************************/
 /* PCMCIA/Cardbus */
@@ -3888,10 +3889,12 @@ int main(int argc, char **argv, char **envp)
     current_machine = machine;
 
     /* init USB devices */
+#ifdef CONFIG_USB
     if (usb_enabled(false)) {
         if (foreach_device_config(DEV_USB, usb_parse) < 0)
             exit(1);
     }
+#endif
 
     /* init generic devices */
     if (qemu_opts_foreach(qemu_find_opts("device"), device_init_func, NULL, 1) != 0)

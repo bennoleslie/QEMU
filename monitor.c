@@ -1244,6 +1244,18 @@ static void do_sum(Monitor *mon, const QDict *qdict)
     monitor_printf(mon, "%05d\n", sum);
 }
 
+#ifndef CONFIG_CONSOLE
+void do_usb_add(Monitor *mon, const QDict *qdict)
+{
+    monitor_printf(mon, "USB not supported\n");
+}
+
+void do_usb_del(Monitor *mon, const QDict *qdict)
+{
+    monitor_printf(mon, "USB not supported\n");
+}
+#endif
+
 #ifdef CONFIG_CONSOLE
 static int mouse_button_state;
 #endif
@@ -2594,6 +2606,7 @@ static mon_cmd_t info_cmds[] = {
         .help       = "show NUMA information",
         .mhandler.info = do_info_numa,
     },
+#ifdef CONFIG_USB
     {
         .name       = "usb",
         .args_type  = "",
@@ -2608,6 +2621,7 @@ static mon_cmd_t info_cmds[] = {
         .help       = "show host USB devices",
         .mhandler.info = usb_host_info,
     },
+#endif
     {
         .name       = "profile",
         .args_type  = "",

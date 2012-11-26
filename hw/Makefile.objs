@@ -1,4 +1,5 @@
-common-obj-y = usb/ ide/
+common-obj-y = ide/
+common-obj-$(CONFIG_USB) += usb/
 common-obj-y += loader.o
 common-obj-$(CONFIG_VIRTIO) += virtio-console.o
 common-obj-$(CONFIG_VIRTIO) += virtio-rng.o
@@ -155,7 +156,6 @@ common-obj-$(CONFIG_SOUND) += $(sound-obj-y)
 
 common-obj-$(CONFIG_REALLY_VIRTFS) += 9pfs/
 
-common-obj-y += usb/
 common-obj-y += irq.o
 common-obj-$(CONFIG_PTIMER) += ptimer.o
 common-obj-$(CONFIG_MAX7310) += max7310.o
